@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine.favoriteModule
+package com.pipe.d.dev.mvvmarchwine.favoriteModule.view
 
 import android.os.Bundle
 import android.view.View
