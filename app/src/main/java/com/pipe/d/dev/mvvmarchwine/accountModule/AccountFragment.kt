@@ -56,8 +56,6 @@ class AccountFragment : Fragment() {
         setupViewModel()
         setupIntents()
         setupObservers()
-        /*setupUserUI()
-        setupButtons()*/
     }
 
     private fun setupObservers() {
@@ -82,28 +80,6 @@ class AccountFragment : Fragment() {
         )[AccountViewModel::class.java]
         binding.lifecycleOwner = this
         binding.setVariable(BR.viewModel, vm)
-    }
-
-    private fun setupUserUI() {
-        val auth = FakeFirebaseAuth()
-        lifecycleScope.launch {
-            showProgress(true)
-            auth.getCurrentUser()?.let { user ->
-                with(binding) {
-                    tvName.text = user.displayName
-                    tvEmail.text = user.email
-                    tvPhone.text = user.phone
-
-                    Glide.with(requireContext())
-                        .load(user.photoUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop()
-                        .into(imgProfile)
-                }
-                setupIntents()
-            }
-            showProgress(false)
-        }
     }
 
     private fun setupIntents() {
@@ -133,31 +109,8 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun setupButtons() {
-        binding.btnSignOut.setOnClickListener {
-            lifecycleScope.launch {
-                showProgress(true)
-                val auth = FakeFirebaseAuth()
-                if (auth.signOut()){
-                    (requireActivity() as MainActivity).apply {
-                        setupNavView(false)
-                        launchLoginUI()
-                    }
-                    showProgress(false)
-                } else {
-                    showProgress(false)
-                    showMsg(R.string.account_sign_out_fail)
-                }
-            }
-        }
-    }
-
     private fun showMsg(msgRes: Int) {
         Snackbar.make(binding.root, msgRes, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun showProgress(isVisible: Boolean) {
-        binding.contentProgress.root.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {
