@@ -36,8 +36,9 @@
                         android:id="@+id/imgProfile"
                         android:layout_width="@dimen/profile_image_size_large"
                         android:layout_height="@dimen/profile_image_size_large"
-                        android:src="@drawable/ic_wine_bar"
-                        android:scaleType="centerCrop"/>
+                        tools:src="@drawable/ic_wine_bar"
+                        android:scaleType="centerCrop"
+                        glideUrl="@{viewModel.user.photoUrl == null ? ``: viewModel.user.photoUrl.toString()}"/>
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -65,6 +66,7 @@
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:autoLink="email"
                     android:linksClickable="false"
+                    android:text="@{viewModel.user.email}"
                     tools:text="cursosandroidant@gmail.com"/>
 
                 <TextView
@@ -77,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:text="@{viewModel.user.phone}"
                     tools:text="+52 555 384 9345"/>
 
                 <com.google.android.material.button.MaterialButton
