@@ -4,11 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.R
 import com.pipe.d.dev.mvvmarchwine.common.utils.OnClickListener
 import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
@@ -42,19 +44,9 @@ open class WineListAdapter : ListAdapter<Wine, RecyclerView.ViewHolder>(WineDiff
         val wine = getItem(position)
         (holder as ViewHolder).run {
             setListener(wine)
+            binding?.setVariable(BR.wine, wine)
+            binding?.executePendingBindings()
 
-            with(binding) {
-                tvWine.text = wine.wine
-                tvWinery.text = wine.winery
-                tvLocation.text = wine.location.replace("\n·", "")
-                rating.rating = wine.rating.average.toFloat()
-
-                Glide.with(context)
-                    .load(wine.image)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .centerCrop()
-                    .into(imgWine)
-            }
         }
     }
 
@@ -63,14 +55,15 @@ open class WineListAdapter : ListAdapter<Wine, RecyclerView.ViewHolder>(WineDiff
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = ItemWineBinding.bind(view)
+        // val binding = ItemWineBinding.bind(view)
+        val binding = DataBindingUtil.bind<ItemWineBinding>(view)
 
         fun setListener(wine: Wine) {
-            binding.root.setOnLongClickListener {
+            binding?.root?.setOnLongClickListener {
                 listener.onLongClick(wine)
                 true
             }
-            binding.cbFavorite.setOnClickListener {
+            binding?.cbFavorite?.setOnClickListener {
                 listener.onFavorite(wine)
             }
         }
