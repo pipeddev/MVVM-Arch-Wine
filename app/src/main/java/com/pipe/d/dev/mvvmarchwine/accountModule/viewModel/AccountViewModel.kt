@@ -40,7 +40,7 @@ class AccountViewModel(private val repository: AccountRepository): ViewModel() {
             }
         }
     }
-    private fun signOut() {
+    fun signOut() {
         viewModelScope.launch {
             _inProgress.value = Constants.SHOW
             try {

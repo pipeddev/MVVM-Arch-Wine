@@ -88,13 +88,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/account_btn_sign_out"
                     android:layout_marginTop="@dimen/common_space_default"
+                    android:onClick="@{() -> viewModel.signOut()}"
                     app:icon="@drawable/ic_logout"
                     style="@style/Widget.Material3.Button.OutlinedButton.Icon"/>
             </LinearLayout>
 
             <include
                 android:id="@+id/content_progress"
-                layout="@layout/content_progress"/>
+                layout="@layout/content_progress"
+                app:inProgress="@{viewModel.inProgress}"/>
         </FrameLayout>
     </ScrollView>
 </layout>

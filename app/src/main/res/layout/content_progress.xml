@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="inProgress"
+            type="boolean" />
+    </data>
+
     <LinearLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
@@ -10,8 +16,8 @@
         android:gravity="center"
         android:focusable="true"
         android:clickable="true"
-        android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="visible"
+        setVisibility="@{inProgress}">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
