@@ -9,14 +9,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
 import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.FakeFirebaseAuth
 import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
 import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.accountModule.model.AccountRepository
+import com.pipe.d.dev.mvvmarchwine.accountModule.viewModel.AccountViewModel
+import com.pipe.d.dev.mvvmarchwine.accountModule.viewModel.AccountViewModelFactory
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentAccountBinding
 import kotlinx.coroutines.launch
 
@@ -38,6 +43,7 @@ class AccountFragment : Fragment() {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
+    private lateinit var vm: AccountViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
@@ -47,8 +53,35 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUserUI()
-        setupButtons()
+        setupViewModel()
+        setupIntents()
+        setupObservers()
+        /*setupUserUI()
+        setupButtons()*/
+    }
+
+    private fun setupObservers() {
+        binding.viewModel?.let {vm ->
+            vm.snackBarMsg.observe(viewLifecycleOwner) {resMsg ->
+                showMsg(resMsg)
+            }
+            vm.isSignOut.observe(viewLifecycleOwner) {isSignOut ->
+                if (isSignOut) {
+                    (requireActivity() as MainActivity).apply {
+                        setupNavView(false)
+                        launchLoginUI()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupViewModel() {
+        vm = ViewModelProvider(this,
+            AccountViewModelFactory(AccountRepository(FakeFirebaseAuth()))
+        )[AccountViewModel::class.java]
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewModel, vm)
     }
 
     private fun setupUserUI() {

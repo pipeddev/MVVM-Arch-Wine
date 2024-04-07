@@ -23,6 +23,11 @@ class AccountViewModel(private val repository: AccountRepository): ViewModel() {
     private val _isSignOut = MutableLiveData<Boolean>()
     val isSignOut: LiveData<Boolean> = _isSignOut
 
+    init {
+        getCurrentUser()
+    }
+
+
     private fun getCurrentUser() {
         viewModelScope.launch {
             _inProgress.value = Constants.SHOW

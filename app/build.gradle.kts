@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinSymbolProcessing)
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
 android {
