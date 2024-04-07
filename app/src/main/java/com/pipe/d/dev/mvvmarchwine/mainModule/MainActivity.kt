@@ -1,11 +1,13 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.mainModule
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.pipe.d.dev.mvvmarchwine.R
 import com.pipe.d.dev.mvvmarchwine.databinding.ActivityMainBinding
+import com.pipe.d.dev.mvvmarchwine.loginModule.LoginFragment
 
 /****
  * Project: Wines

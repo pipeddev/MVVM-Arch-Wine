@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.loginModule
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
+import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.FakeFirebaseAuth
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentLoginBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

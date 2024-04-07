@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.view
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -2,6 +2,7 @@ package com.pipe.d.dev.mvvmarchwine
 
 import android.app.Application
 import androidx.room.Room
+import com.pipe.d.dev.mvvmarchwine.common.dataAccess.room.WineDatabase
 
 /****
  * Project: Wines

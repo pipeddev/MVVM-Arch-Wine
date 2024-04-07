@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

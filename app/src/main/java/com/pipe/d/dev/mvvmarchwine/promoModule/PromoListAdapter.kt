@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.promoModule
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.common.entities.Promo
 import com.pipe.d.dev.mvvmarchwine.databinding.ItemPromoBinding
 
 /****

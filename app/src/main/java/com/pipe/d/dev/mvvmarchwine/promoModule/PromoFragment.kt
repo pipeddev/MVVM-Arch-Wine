@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.promoModule
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.getAllPromos
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentPromoBinding
 
 /****

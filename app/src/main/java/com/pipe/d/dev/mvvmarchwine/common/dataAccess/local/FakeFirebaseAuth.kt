@@ -1,6 +1,7 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.dataAccess.local
 
 import android.net.Uri
+import com.pipe.d.dev.mvvmarchwine.common.entities.FirebaseUser
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 

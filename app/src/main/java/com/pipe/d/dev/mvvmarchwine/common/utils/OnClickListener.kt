@@ -1,4 +1,6 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.utils
+
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 
 /****
  * Project: Wines
@@ -14,6 +16,7 @@ package com.pipe.d.dev.mvvmarchwine
  * Coupons on my Website:
  * www.alainnicolastello.com
  ***/
-data class Promo(val id: Long,
-                 val description: String,
-                 val url: String)
+interface OnClickListener {
+    fun onFavorite(wine: Wine)
+    fun onLongClick(wine: Wine)
+}

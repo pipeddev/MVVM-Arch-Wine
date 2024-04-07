@@ -1,10 +1,17 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.favoriteModule
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.updateModule.UpdateDialogFragment
+import com.pipe.d.dev.mvvmarchwine.WineApplication
+import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
+import com.pipe.d.dev.mvvmarchwine.common.utils.OnClickListener
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
+import com.pipe.d.dev.mvvmarchwine.common.view.WineBaseFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
