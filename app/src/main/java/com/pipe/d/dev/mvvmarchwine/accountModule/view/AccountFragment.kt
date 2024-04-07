@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine.accountModule
+package com.pipe.d.dev.mvvmarchwine.accountModule.view
 
 import android.content.Intent
 import android.net.Uri
@@ -10,9 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
@@ -23,7 +20,6 @@ import com.pipe.d.dev.mvvmarchwine.accountModule.model.AccountRepository
 import com.pipe.d.dev.mvvmarchwine.accountModule.viewModel.AccountViewModel
 import com.pipe.d.dev.mvvmarchwine.accountModule.viewModel.AccountViewModelFactory
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentAccountBinding
-import kotlinx.coroutines.launch
 
 /****
  * Project: Wines
