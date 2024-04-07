@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.pipe.d.dev.mvvmarchwine.accountModule.viewModel.AccountViewModel" />
+    </data>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:text="@{viewModel.user.displayName}"
                     tools:text="Cursos Android ANT"/>
 
                 <TextView
