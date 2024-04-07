@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.updateModule
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -12,6 +12,10 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.WineApplication
+import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentDialogUpdateBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

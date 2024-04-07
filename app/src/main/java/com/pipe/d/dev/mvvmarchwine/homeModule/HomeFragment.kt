@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.homeModule
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.WineApplication
+import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
+import com.pipe.d.dev.mvvmarchwine.common.utils.OnClickListener
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
+import com.pipe.d.dev.mvvmarchwine.common.view.WineBaseFragment
+import com.pipe.d.dev.mvvmarchwine.common.dataAccess.retrofit.WineService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

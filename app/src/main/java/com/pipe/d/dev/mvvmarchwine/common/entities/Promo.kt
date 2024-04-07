@@ -1,6 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
-
-import retrofit2.http.GET
+package com.pipe.d.dev.mvvmarchwine.common.entities
 
 /****
  * Project: Wines
@@ -16,8 +14,6 @@ import retrofit2.http.GET
  * Coupons on my Website:
  * www.alainnicolastello.com
  ***/
-interface WineService {
-    // https://sampleapis.com/api-list/wines
-    @GET(Constants.PATH_WINES)
-    suspend fun getRedWines() : List<Wine>
-}
+data class Promo(val id: Long,
+                 val description: String,
+                 val url: String)

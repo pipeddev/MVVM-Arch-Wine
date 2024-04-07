@@ -1,8 +1,9 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.dataAccess.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 
 /****
  * Project: Wines

@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.entities
 
 /****
  * Project: Wines
@@ -14,7 +14,5 @@ package com.pipe.d.dev.mvvmarchwine
  * Coupons on my Website:
  * www.alainnicolastello.com
  ***/
-interface OnClickListener {
-    fun onFavorite(wine: Wine)
-    fun onLongClick(wine: Wine)
-}
+data class Rating(var average: String,
+                  val reviews: String)

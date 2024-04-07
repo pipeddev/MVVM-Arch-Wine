@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.utils
 
 /****
  * Project: Wines

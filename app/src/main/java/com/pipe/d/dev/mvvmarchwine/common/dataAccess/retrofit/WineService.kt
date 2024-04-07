@@ -1,4 +1,8 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.dataAccess.retrofit
+
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
+import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
+import retrofit2.http.GET
 
 /****
  * Project: Wines
@@ -14,5 +18,8 @@ package com.pipe.d.dev.mvvmarchwine
  * Coupons on my Website:
  * www.alainnicolastello.com
  ***/
-data class Rating(var average: String,
-                  val reviews: String)
+interface WineService {
+    // https://sampleapis.com/api-list/wines
+    @GET(Constants.PATH_WINES)
+    suspend fun getRedWines() : List<Wine>
+}

@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.accountModule
 
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
+import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.FakeFirebaseAuth
+import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
+import com.pipe.d.dev.mvvmarchwine.R
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentAccountBinding
 import kotlinx.coroutines.launch
 

@@ -1,7 +1,8 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.dataAccess.room
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.pipe.d.dev.mvvmarchwine.common.entities.Rating
 
 /****
  * Project: Wines

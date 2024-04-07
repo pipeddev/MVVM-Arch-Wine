@@ -1,7 +1,8 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.favoriteModule
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.pipe.d.dev.mvvmarchwine.homeModule.WineListAdapter
 
 /****
  * Project: Wines

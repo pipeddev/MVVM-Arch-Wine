@@ -1,4 +1,6 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.dataAccess.local
+
+import com.pipe.d.dev.mvvmarchwine.common.entities.Promo
 
 /****
  * Project: Wines

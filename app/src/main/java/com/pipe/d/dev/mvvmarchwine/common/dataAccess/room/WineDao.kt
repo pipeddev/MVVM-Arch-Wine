@@ -1,10 +1,11 @@
-package com.pipe.d.dev.mvvmarchwine
+package com.pipe.d.dev.mvvmarchwine.common.dataAccess.room
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 
 /****
  * Project: Wines
