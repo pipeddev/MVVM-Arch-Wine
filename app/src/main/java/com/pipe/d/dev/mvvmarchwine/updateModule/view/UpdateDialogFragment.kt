@@ -6,20 +6,19 @@ import android.content.DialogInterface
 import android.content.DialogInterface.OnShowListener
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
+import androidx.lifecycle.ViewModelProvider
+import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.R
-import com.pipe.d.dev.mvvmarchwine.WineApplication
-import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
 import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
+import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentDialogUpdateBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.pipe.d.dev.mvvmarchwine.updateModule.model.RoomDatabase
+import com.pipe.d.dev.mvvmarchwine.updateModule.model.UpdateRepository
+import com.pipe.d.dev.mvvmarchwine.updateModule.viewModel.UpdateViewModel
+import com.pipe.d.dev.mvvmarchwine.updateModule.viewModel.UpdateViewModelFactory
 
 /****
  * Project: Wines
@@ -39,6 +38,7 @@ class UpdateDialogFragment : DialogFragment(), OnShowListener {
 
     private var _binding: FragmentDialogUpdateBinding? = null
     private val binding get() = _binding!!
+    private lateinit var vm: UpdateViewModel
 
     private var _wineId = -1.0
     private lateinit var wine: Wine
@@ -78,50 +78,38 @@ class UpdateDialogFragment : DialogFragment(), OnShowListener {
             val positiveButton = it.getButton(DialogInterface.BUTTON_POSITIVE)
             val negativeButton = it.getButton(DialogInterface.BUTTON_NEGATIVE)
             positiveButton.setOnClickListener {
-                showProgress(true)
-                lifecycleScope.launch(Dispatchers.IO) {
-                    wine.rating.average = binding.rating.rating.toString()
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val result = WineApplication.database.wineDao().updateWine(wine)
-                        withContext(Dispatchers.Main) {
-                            if (result == 0) {
-                                Snackbar.make(binding.root, R.string.room_save_fail, Snackbar.LENGTH_SHORT).show()
-                            } else {
-                                showMsg(R.string.room_save_success)
-                                dismiss()
-                            }
-                            showProgress(false)
-                        }
-                    }
-                }
+                vm.updateWine(binding.rating.rating.toString())
             }
             negativeButton.setOnClickListener { dismiss() }
         }
 
+        setupViewModel()
+        setupObservers()
         getWineById()
+    }
+
+    private fun setupViewModel() {
+        vm = ViewModelProvider(this,
+            UpdateViewModelFactory(UpdateRepository(RoomDatabase())))[UpdateViewModel::class.java]
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewModel, vm)
+    }
+
+    private fun setupObservers() {
+        binding.viewModel?.let { vm ->
+            vm.snackBarMsg.observe(viewLifecycleOwner) { resMsg ->
+                showMsg(resMsg)
+                if (resMsg == R.string.room_save_success) dismiss()
+            }
+        }
     }
 
     private fun showMsg(msgRes: Int) {
         Toast.makeText(requireContext(), msgRes, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showProgress(isVisible: Boolean) {
-        binding.contentProgress.root.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
     private fun getWineById() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = WineApplication.database.wineDao().getWineById(_wineId)
-            wine = result
-            withContext(Dispatchers.Main) {
-                setupUI()
-            }
-        }
-    }
-
-    private fun setupUI() {
-        binding.tvWine.text = wine.wine
-        binding.rating.rating = wine.rating.average.toFloat()
+        if (_wineId != -1.0) vm.requestWine(_wineId)
     }
 
     fun setOnUpdateListener(block: () -> Unit) {
