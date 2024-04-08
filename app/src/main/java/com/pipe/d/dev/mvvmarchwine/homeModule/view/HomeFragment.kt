@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine.homeModule
+package com.pipe.d.dev.mvvmarchwine.homeModule.view
 
 import android.os.Bundle
 import android.util.Log
