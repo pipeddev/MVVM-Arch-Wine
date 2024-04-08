@@ -2,19 +2,19 @@ package com.pipe.d.dev.mvvmarchwine.favoriteModule.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.pipe.d.dev.mvvmarchwine.R
-import com.pipe.d.dev.mvvmarchwine.updateModule.UpdateDialogFragment
-import com.pipe.d.dev.mvvmarchwine.WineApplication
+import com.pipe.d.dev.mvvmarchwine.BR
+import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
 import com.pipe.d.dev.mvvmarchwine.common.utils.OnClickListener
-import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 import com.pipe.d.dev.mvvmarchwine.common.view.WineBaseFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.pipe.d.dev.mvvmarchwine.favoriteModule.model.FavoriteRepository
+import com.pipe.d.dev.mvvmarchwine.favoriteModule.model.RoomDatabase
+import com.pipe.d.dev.mvvmarchwine.favoriteModule.viewModel.FavoriteViewModel
+import com.pipe.d.dev.mvvmarchwine.favoriteModule.viewModel.FavoriteViewModelFactory
+import com.pipe.d.dev.mvvmarchwine.updateModule.UpdateDialogFragment
 
 /****
  * Project: Wines
@@ -33,13 +33,33 @@ import kotlinx.coroutines.withContext
 class FavouriteFragment : WineBaseFragment(), OnClickListener {
 
     private lateinit var adapter: WineFavListAdapter
+    private lateinit var vm: FavoriteViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViewModel()
         setupAdapter()
         setupRecyclerView()
-        setupSwipeRefresh()
+        setupObservers()
+    }
+
+    private fun setupViewModel() {
+        vm = ViewModelProvider(this, FavoriteViewModelFactory(
+            FavoriteRepository(RoomDatabase())))[FavoriteViewModel::class.java]
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewModel, vm)
+    }
+
+    private fun setupObservers() {
+        binding.viewModel?.let {vm ->
+            vm.snackBarMsg.observe(viewLifecycleOwner) {resMsg ->
+                showMsg(resMsg)
+            }
+            vm.wines.observe(viewLifecycleOwner) {wines ->
+                adapter.submitList(wines)
+            }
+        }
     }
 
     private fun setupAdapter() {
@@ -54,54 +74,8 @@ class FavouriteFragment : WineBaseFragment(), OnClickListener {
         }
     }
 
-    private fun setupSwipeRefresh() {
-        binding.srlResults.setOnRefreshListener {
-            getWines()
-        }
-    }
-
-    private fun getWines() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val wines = WineApplication.database.wineDao().getAllWines()
-                withContext(Dispatchers.Main){
-                    if (wines.isNotEmpty()) {
-                        showNoDataView(false)
-                        showRecyclerView(true)
-                        adapter.submitList(wines)
-                    } else {
-                        showRecyclerView(false)
-                        showNoDataView(true)
-                    }
-                }
-            } catch (e: Exception) {
-                showMsg(R.string.room_request_fail)
-            } finally {
-                showProgress(false)
-            }
-        }
-    }
-
     private fun showMsg(msgRes: Int) {
         Snackbar.make(binding.root, msgRes, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun showProgress(isVisible: Boolean) {
-        binding.srlResults.isRefreshing = isVisible
-    }
-
-    private fun showNoDataView(isVisible: Boolean) {
-        binding.tvNoData.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    private fun showRecyclerView(isVisible: Boolean) {
-        binding.recyclerView.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showProgress(true)
-        getWines()
     }
 
     /*
@@ -109,23 +83,7 @@ class FavouriteFragment : WineBaseFragment(), OnClickListener {
     * */
     override fun onFavorite(wine: Wine) {
         wine.isFavorite = !wine.isFavorite
-        lifecycleScope.launch(Dispatchers.IO) {
-            if (wine.isFavorite){
-                val result = WineApplication.database.wineDao().addWine(wine)
-                if (result == -1L) {
-                    Snackbar.make(binding.root, R.string.room_save_fail, Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(binding.root, R.string.room_save_success, Snackbar.LENGTH_SHORT).show()
-                }
-            } else {
-                val result = WineApplication.database.wineDao().deleteWine(wine)
-                if (result == 0) {
-                    Snackbar.make(binding.root, R.string.room_save_fail, Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(binding.root, R.string.room_save_success, Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        }
+        if (wine.isFavorite) vm.addWine(wine) else vm.deleteWine(wine)
     }
 
     override fun onLongClick(wine: Wine) {
@@ -137,7 +95,7 @@ class FavouriteFragment : WineBaseFragment(), OnClickListener {
         fragment.show(fragmentManager, UpdateDialogFragment::class.java.simpleName)
         fragment.setOnUpdateListener {
             binding.srlResults.isRefreshing = true
-            getWines()
+            binding.viewModel?.getAllWines()
         }
     }
 }
