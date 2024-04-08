@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine.loginModule
+package com.pipe.d.dev.mvvmarchwine.loginModule.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
