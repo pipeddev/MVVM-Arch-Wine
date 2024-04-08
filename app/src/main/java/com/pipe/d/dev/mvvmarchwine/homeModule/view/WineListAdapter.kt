@@ -1,4 +1,4 @@
-package com.pipe.d.dev.mvvmarchwine.homeModule
+package com.pipe.d.dev.mvvmarchwine.homeModule.view
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,8 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.R
 import com.pipe.d.dev.mvvmarchwine.common.utils.OnClickListener
