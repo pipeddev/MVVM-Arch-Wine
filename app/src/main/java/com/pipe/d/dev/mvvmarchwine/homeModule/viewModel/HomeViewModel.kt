@@ -1,64 +1,52 @@
 package com.pipe.d.dev.mvvmarchwine.homeModule.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pipe.d.dev.mvvmarchwine.R
 import com.pipe.d.dev.mvvmarchwine.common.entities.MyException
 import com.pipe.d.dev.mvvmarchwine.common.entities.Wine
 import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
+import com.pipe.d.dev.mvvmarchwine.common.viewModel.BaseWineViewModel
 import com.pipe.d.dev.mvvmarchwine.homeModule.model.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel(private val repository: HomeRepository): ViewModel() {
-    private val _inProgress = MutableLiveData<Boolean>()
-    val inProgress: LiveData<Boolean> = _inProgress
-
-    private val _snackBarMsg = MutableLiveData<Int>()
-    val snackBarMsg: LiveData<Int> = _snackBarMsg
-
-    private val _wines = MutableLiveData<List<Wine>>()
-    val wines: LiveData<List<Wine>> = _wines
+class HomeViewModel(private val repository: HomeRepository): BaseWineViewModel() {
 
     init {
         getAllWines()
     }
 
-    fun getAllWines() {
+    override fun getAllWines() {
         viewModelScope.launch {
-            viewModelScope.launch {
-                _inProgress.value = Constants.SHOW
-                try {
-                    withContext(Dispatchers.IO) {
-                        repository.getAllWines { wines ->
-                            _wines.value = wines
-                        }
+            setInProgress(Constants.SHOW)
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.getAllWines { wines ->
+                        setWines(wines)
                     }
-                }catch (ex: MyException) {
-                    _snackBarMsg.postValue(ex.resMsg)
-                }finally {
-                    _inProgress.value = Constants.HIDE
                 }
+            }catch (ex: MyException) {
+                setSnackbarMsg(ex.resMsg)
+            }finally {
+                setInProgress(Constants.HIDE)
             }
         }
     }
 
-    fun addWine(wine: Wine) {
+    override fun addWine(wine: Wine) {
         viewModelScope.launch {
-            _inProgress.value = Constants.SHOW
+            setInProgress(Constants.SHOW)
             try {
                 withContext(Dispatchers.IO) {
                     repository.addWine(wine) {
-                        _snackBarMsg.postValue(R.string.room_save_success)
+                        setSnackbarMsg(R.string.room_save_success)
                     }
                 }
             }catch (ex: MyException) {
-                _snackBarMsg.postValue(ex.resMsg)
+                setSnackbarMsg(ex.resMsg)
             }finally {
-                _inProgress.value = Constants.HIDE
+                setInProgress(Constants.HIDE)
             }
         }
     }
