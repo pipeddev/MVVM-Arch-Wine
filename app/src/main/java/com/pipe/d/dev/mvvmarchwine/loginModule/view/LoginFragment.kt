@@ -13,7 +13,7 @@ import com.pipe.d.dev.mvvmarchwine.databinding.FragmentLoginBinding
 import com.pipe.d.dev.mvvmarchwine.loginModule.model.LoginRepository
 import com.pipe.d.dev.mvvmarchwine.loginModule.viewModel.LoginViewModel
 import com.pipe.d.dev.mvvmarchwine.loginModule.viewModel.LoginViewModelFactory
-import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
+import com.pipe.d.dev.mvvmarchwine.mainModule.view.MainActivity
 
 /****
  * Project: Wines
