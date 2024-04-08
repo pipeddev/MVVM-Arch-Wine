@@ -5,9 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.pipe.d.dev.mvvmarchwine.BR
+import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.FakeFirebaseAuth
 import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.getAllPromos
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentPromoBinding
+import com.pipe.d.dev.mvvmarchwine.loginModule.model.LoginRepository
+import com.pipe.d.dev.mvvmarchwine.loginModule.viewModel.LoginViewModel
+import com.pipe.d.dev.mvvmarchwine.loginModule.viewModel.LoginViewModelFactory
+import com.pipe.d.dev.mvvmarchwine.promoModule.model.Database
+import com.pipe.d.dev.mvvmarchwine.promoModule.model.PromoRepository
+import com.pipe.d.dev.mvvmarchwine.promoModule.viewModel.PromoViewModel
+import com.pipe.d.dev.mvvmarchwine.promoModule.viewModel.PromoViewModelFactory
+import kotlinx.coroutines.launch
 
 /****
  * Project: Wines
@@ -28,6 +41,7 @@ class PromoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: PromoListAdapter
+    private lateinit var vm: PromoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -38,9 +52,32 @@ class PromoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViewModel()
         setupAdapter()
         setupRecyclerView()
-        getPromos()
+        setupObservers()
+    }
+
+    private fun setupViewModel() {
+        vm = ViewModelProvider(this, PromoViewModelFactory(
+            PromoRepository(Database())))[PromoViewModel::class.java]
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewModel, vm)
+    }
+
+    private fun setupObservers() {
+        binding.viewModel?.let { vm ->
+            vm.snackBarMsg.observe(viewLifecycleOwner) { resMsg ->
+                showMsg(resMsg)
+            }
+            vm.promos.observe(viewLifecycleOwner) {promos ->
+                adapter.submitList(promos)
+            }
+        }
+    }
+
+    private fun showMsg(msgRes: Int) {
+        Snackbar.make(binding.root, msgRes, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun setupAdapter() {
@@ -53,10 +90,6 @@ class PromoFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireActivity())
             adapter = this@PromoFragment.adapter
         }
-    }
-
-    private fun getPromos() {
-        adapter.submitList(getAllPromos())
     }
 
     override fun onDestroy() {
