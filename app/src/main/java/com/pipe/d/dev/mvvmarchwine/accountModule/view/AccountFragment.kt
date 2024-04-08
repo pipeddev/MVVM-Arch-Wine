@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
 import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.FakeFirebaseAuth
-import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
+import com.pipe.d.dev.mvvmarchwine.mainModule.view.MainActivity
 import com.pipe.d.dev.mvvmarchwine.R
 import com.pipe.d.dev.mvvmarchwine.accountModule.model.AccountRepository
 import com.pipe.d.dev.mvvmarchwine.accountModule.viewModel.AccountViewModel
