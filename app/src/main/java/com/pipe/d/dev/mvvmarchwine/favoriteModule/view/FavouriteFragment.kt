@@ -14,7 +14,7 @@ import com.pipe.d.dev.mvvmarchwine.favoriteModule.model.FavoriteRepository
 import com.pipe.d.dev.mvvmarchwine.favoriteModule.model.RoomDatabase
 import com.pipe.d.dev.mvvmarchwine.favoriteModule.viewModel.FavoriteViewModel
 import com.pipe.d.dev.mvvmarchwine.favoriteModule.viewModel.FavoriteViewModelFactory
-import com.pipe.d.dev.mvvmarchwine.updateModule.UpdateDialogFragment
+import com.pipe.d.dev.mvvmarchwine.updateModule.view.UpdateDialogFragment
 
 /****
  * Project: Wines
