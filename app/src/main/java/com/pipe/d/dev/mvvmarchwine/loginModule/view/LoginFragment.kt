@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
-import com.pipe.d.dev.mvvmarchwine.R
+import com.pipe.d.dev.mvvmarchwine.BR
 import com.pipe.d.dev.mvvmarchwine.common.dataAccess.local.FakeFirebaseAuth
 import com.pipe.d.dev.mvvmarchwine.databinding.FragmentLoginBinding
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.pipe.d.dev.mvvmarchwine.loginModule.model.LoginRepository
+import com.pipe.d.dev.mvvmarchwine.loginModule.viewModel.LoginViewModel
+import com.pipe.d.dev.mvvmarchwine.loginModule.viewModel.LoginViewModelFactory
+import com.pipe.d.dev.mvvmarchwine.mainModule.MainActivity
 
 /****
  * Project: Wines
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private lateinit var vm: LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
@@ -41,53 +43,39 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkAuth()
+        setupViewModel()
         setupButtons()
+        setupObservers()
     }
 
-    private fun checkAuth() {
-        lifecycleScope.launch {
-            showProgress(true)
-            delay(2_500)
-            val auth = FakeFirebaseAuth()
-            if (auth.isValidAuth()) {
-                closeLoginUI()
-            } else {
-                showForm(true)
+    private fun setupViewModel() {
+        vm = ViewModelProvider(this, LoginViewModelFactory(
+            LoginRepository(FakeFirebaseAuth())))[LoginViewModel::class.java]
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewModel, vm)
+    }
+
+    private fun setupObservers() {
+        binding.viewModel?.let {vm ->
+            vm.snackBarMsg.observe(viewLifecycleOwner) {resMsg ->
+                showMsg(resMsg)
             }
-            showProgress(false)
+            vm.isValidAuth.observe(viewLifecycleOwner) { isValid ->
+                if(isValid) closeLoginUI()
+            }
         }
     }
 
     private fun setupButtons() {
         with(binding) {
             btnLogin.setOnClickListener {
-                lifecycleScope.launch {
-                    showProgress(true)
-                    showForm(false)
-                    val auth = FakeFirebaseAuth()
-                    if (auth.login(etUsername.text.toString(), etPin.text.toString()))
-                        closeLoginUI()
-                    else {
-                        showProgress(false)
-                        showMsg(R.string.login_login_fail)
-                        showForm(true)
-                    }
-                }
+                vm.login(etUsername.text.toString(), etPin.text.toString())
             }
         }
     }
 
     private fun showMsg(msgRes: Int) {
         Snackbar.make(binding.root, msgRes, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun showProgress(isVisible: Boolean) {
-        binding.contentProgress.root.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    private fun showForm(isVisible: Boolean) {
-        binding.contentLogin.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     private fun closeLoginUI() {

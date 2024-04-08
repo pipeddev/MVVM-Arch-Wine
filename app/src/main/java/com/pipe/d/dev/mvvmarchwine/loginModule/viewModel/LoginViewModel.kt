@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pipe.d.dev.mvvmarchwine.common.entities.FirebaseUser
+import com.pipe.d.dev.mvvmarchwine.common.entities.MyException
 import com.pipe.d.dev.mvvmarchwine.common.utils.Constants
 import com.pipe.d.dev.mvvmarchwine.loginModule.model.LoginRepository
 import kotlinx.coroutines.launch
@@ -15,9 +16,6 @@ class LoginViewModel(private val repository: LoginRepository): ViewModel() {
 
     private val _snackBarMsg = MutableLiveData<Int>()
     val snackBarMsg: LiveData<Int> = _snackBarMsg
-
-    private val _user = MutableLiveData<FirebaseUser?>()
-    val user: LiveData<FirebaseUser?> = _user
 
     private val _isValidAuth = MutableLiveData<Boolean>()
     val isValidAuth: LiveData<Boolean> = _isValidAuth
@@ -42,6 +40,8 @@ class LoginViewModel(private val repository: LoginRepository): ViewModel() {
             _inProgress.value = Constants.SHOW
             try {
                 _isValidAuth.value = repository.login(username, pin)
+            } catch (ex: MyException){
+                _snackBarMsg.value = ex.resMsg
             } finally {
                 _inProgress.value = Constants.HIDE
             }
