@@ -41,7 +41,6 @@ class UpdateDialogFragment : DialogFragment(), OnShowListener {
     private lateinit var vm: UpdateViewModel
 
     private var _wineId = -1.0
-    private lateinit var wine: Wine
 
     private var onUpdateListener: () -> Unit = {}
 
